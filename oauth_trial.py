@@ -27,11 +27,22 @@ def get_authurl(gr, reqtoken):
     authurl = gr.get_authorize_url(reqtoken)
     return authurl
 
+def get_session(gr, req_token, req_token_secret):
+    session = goodreads.get_auth_session(request_token, request_token_secret)
+    return session
+
+def get_user_info(gr, req_token, req_token_secret, session):
+    ACCESS_TOKEN = session.access_token
+    ACCESS_TOKEN_SECRET = session.access_token_secret
+    username_xml = session.get('https://www.goodreads.com/api/auth_user')
+    dom = parseString(username_xml.content)
+    username = dom.getElementsByTagName('name')[0].childNodes[0].data
+    #print('Username: %s' % username)
+    return dom
+
 goodreads = get_oauthservice()
 request_token, request_token_secret = get_reqauth(goodreads)
 authorization_url = get_authurl(goodreads, request_token)
-
-
 print('Visit this URL in your browser: ' + authorization_url)
 accepted = 'n'
 while accepted.lower() == 'n':
@@ -39,13 +50,8 @@ while accepted.lower() == 'n':
     # and proceed to manually authorize the consumer
     accepted = input('Have you authorized me? (y/n) ')
 
-def get_session(gr, req_token, req_token_secret):
-    session = goodreads.get_auth_session(request_token, request_token_secret)
-    return session
-
 session = get_session(goodreads, request_token, request_token_secret)
-ACCESS_TOKEN = session.access_token
-ACCESS_TOKEN_SECRET = session.access_token_secret
+dom = get_user_info(goodreads, request_token, request_token_secret, session)
 
 #new_session = OAuth1Session(
 #    consumer_key = CONSUMER_KEY,
@@ -54,7 +60,3 @@ ACCESS_TOKEN_SECRET = session.access_token_secret
 #    access_token_secret = ACCESS_TOKEN_SECRET,
 #)
 
-username_xml = session.get('https://www.goodreads.com/api/auth_user')
-dom = parseString(username_xml.content)
-username = dom.getElementsByTagName('name')[0].childNodes[0].data
-print('Username: %s' % username)
