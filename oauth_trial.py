@@ -19,11 +19,20 @@ def get_oauthservice():
         )
     return gr
 
-goodreads = get_oauthservice()
-request_token, request_token_secret = goodreads.get_request_token(header_auth=True)
-authurl = goodreads.get_authorize_url(request_token)
+def get_reqauth(gr):
+    req_token, req_token_secret = gr.get_request_token(header_auth=True)
+    return (req_token, req_token_secret)
 
-print('Visit this URL in your browser: ' + authurl)
+def get_authurl(gr, reqtoken):
+    authurl = gr.get_authorize_url(reqtoken)
+    return authurl
+
+goodreads = get_oauthservice()
+request_token, request_token_secret = get_reqauth(goodreads)
+authorization_url = get_authurl(goodreads, request_token)
+
+
+print('Visit this URL in your browser: ' + authorization_url)
 accepted = 'n'
 while accepted.lower() == 'n':
     # you need to access the authorize_link via a browser,
