@@ -37,8 +37,8 @@ def get_user_info(gr, req_token, req_token_secret, session):
     username_xml = session.get('https://www.goodreads.com/api/auth_user')
     dom = parseString(username_xml.content)
     username = dom.getElementsByTagName('name')[0].childNodes[0].data
-    #print('Username: %s' % username)
-    return dom
+    userid = dom.getElementsByTagName('user')[0].getAttribute('id')
+    return dom, username, userid
 
 goodreads = get_oauthservice()
 request_token, request_token_secret = get_reqauth(goodreads)
