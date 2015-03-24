@@ -39,14 +39,18 @@ while accepted.lower() == 'n':
     # and proceed to manually authorize the consumer
     accepted = input('Have you authorized me? (y/n) ')
 
-session = goodreads.get_auth_session(request_token, request_token_secret)
-ACCEESS_TOKEN = session.access_token
+def get_session(gr, req_token, req_token_secret):
+    session = goodreads.get_auth_session(request_token, request_token_secret)
+    return session
+
+session = get_session(goodreads, request_token, request_token_secret)
+ACCESS_TOKEN = session.access_token
 ACCESS_TOKEN_SECRET = session.access_token_secret
 
 #new_session = OAuth1Session(
 #    consumer_key = CONSUMER_KEY,
 #    consumer_secret = CONSUMER_SECRET,
-#    access_token = ACCEESS_TOKEN,
+#    access_token = ACCESS_TOKEN,
 #    access_token_secret = ACCESS_TOKEN_SECRET,
 #)
 
