@@ -1,7 +1,9 @@
 from django.db import models
 
 class User(models.Model):
-    userid = models.AutoField(primary_key=True)
+    userid = models.CharField(max_length=75, primary_key=True)
+    accesstoken = models.CharField(max_length=200, unique=True)
+    accesstokensecret = models.CharField(max_length=200, unique=True)
     username = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
     apt = models.CharField(max_length=75)
