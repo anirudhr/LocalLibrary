@@ -10,7 +10,7 @@ class LocalLib_GRAPI():
         dom = parseString(username_xml.content)
         username = dom.getElementsByTagName('name')[0].childNodes[0].data
         userid = dom.getElementsByTagName('user')[0].getAttribute('id')
-        return dom, username, userid
+        return dom, username, userid, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -45,5 +45,5 @@ class LocalLib_GRAPI():
 
 GRAPI = LocalLib_GRAPI()
 #GRAPI.authorizer()
-dom, username, userid = GRAPI.get_user_info()
+dom, username, userid, access_token, access_token_secret = GRAPI.get_user_info()
 print('ID: %s and name: %s' % (userid, username))
